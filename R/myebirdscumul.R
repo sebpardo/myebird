@@ -1,8 +1,39 @@
+#' Calculate cumulative species counts gouped by year, country, and/or month.
+#'
+#' \code{myebirdscumul} calculates cumulative species counts based on data dumped by eBird
+#' (Download page: \url{http://ebird.org/ebird/downloadMyData}) after it has been cleaned with \code{ebirdclean}.
+#'
+#' @param mydata Data frame provided by \code{ebirdclean}.
+#' @param years Range of years to calculate across, default is between 1900 and current year.
+#' @param grouping Character vector specifying how the data should be grouped for counting.
+#'   Must be composed of "Year", "Country", and/or "Month". This vector is passed on directly to \code{group_by_}.
+#' @param cum.across Grouping of variable that cumulative counts should be done across. For example,
+#'   if you want to count cumulative across months within each year, then grouping should be "Year" and
+#'   cum.across = "Month".
+#' @param wide Logical value specifying whether output should be returned in wide format. Defaults to FALSE.
+#'
+#' @return A data frame containing cumulative counts divided into specified groups. If \code{wide = FALSE}
+#'   then it returns a combination of the following columns, depending on grouping specified:
+#' @return "Year" Year
+#' @return "Country" Country using two letter codes.
+#' @return "Month" Month, using full month name (from month.name()).
+#' @return "cumul" Cumulative species count for the specified Year, Country, and Month.
+#' @return If in wide format, then the first column(s) consist of the values in grouping that
+#' are not equal to wide, while the remaining columns are unique values of the argument specified in wide.
+#'
+#' @import dplyr tidyr lazyeval
+#' @export
+#'
+#' @examples \dontrun{
+#' mylist <- ebirdclean() # CSV must be in working directory
+#' myebirdscumul(mylist, grouping = c("Country", "Year"), years = 2013:2015, cum.across = c("Month"))
+#' }
+#' @author Sebastian Pardo \email{sebpardo@gmail.com}
 
 myebirdscumul <- function (mydata, years = 1900:format(Sys.Date(), "%Y"),
                         grouping = c("Year", "Country"),
                         cum.across = "Month",
-                        wide = TRUE) {
+                        wide = FALSE) {
   group.options <- c("Year", "Country", NULL)
   if (!all(grouping %in% group.options) || length(grouping) > 2 ||
       length(grouping) != length(unique(grouping))) stop("grouping specified incorrectly")

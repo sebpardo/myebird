@@ -1,7 +1,7 @@
 #' Calculate species totals gouped by year, country, and/or month.
 #'
 #' \code{myebirds} calculates species totals based on data dumped by eBird
-#' (link to download page \href{}{here}) after it has been cleaned with \code{ebirdclean}.
+#' (Download page: \url{http://ebird.org/ebird/downloadMyData}) after it has been cleaned with \code{ebirdclean}.
 #'
 #' @param mydata Data frame provided by \code{ebirdclean}.
 #' @param years Range of years to calculate across, default is between 1900 and current year.
