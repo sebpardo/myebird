@@ -85,7 +85,7 @@ myebirds(mylist, grouping = c("Country", "Month")) %>%
 
 Or even cooler, how many species have I seen in each country and year, cumulative per month, between 2010 and 2016?
 
-```{r, fig.width=9}
+```{r, fig.width=9, fig.height=5}
 myebirdscumul(mylist, grouping = c("Country", "Year"), year = 2010:2016,
                         cum.across = c("Month")) %>%
   ggplot(aes(ordered(Month, month.name), cumul, color = Year, group = Year)) +
