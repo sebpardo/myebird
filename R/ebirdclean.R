@@ -7,7 +7,7 @@
 #'   - Removes text in parentheses in Common.name, which is used to denote subspecies or groups.
 #'   - Removes all rows of species labelled as hybrids, domestic types, or spuhs (Genus sp.).
 #' @details Uses \code{read.csv} to read the .csv file, with its only argument being \code{stringsAsFactors = FALSE}.
-#' @import dplyr countrycode
+#' @import dplyr countrycode stringr
 #' @export
 #'
 #' @examples
@@ -22,11 +22,12 @@ ebirdclean <- function(x = "MyEBirdData.csv") {
   mydata <- mydata %>%  mutate(Year = format(strptime(Date, "%m-%d-%Y"), "%Y"),
                                Month = factor(format(strptime(Date, "%m-%d-%Y"), "%B"),
                                               levels = month.name),
-                               Country = substr(State.Province,1 , 2),
+                               Country.code = substr(State.Province,1 , 2),
+                               sciName = stringr::word(Scientific.Name, 1, 2),
                                comName = gsub("\\s*\\([^\\)]+\\)", "", Common.Name),
                   # removing text between parenthesis in common name to compare uniques
-                          Country.full = countrycode::countrycode(Country,
-                                                                  "iso2c", "country.name")) %>%
+                          Country = countrycode::countrycode(Country.code,
+                                                      "iso2c", "country.name")) %>%
                   # Adding full country names
   filter(!grepl("hybrid|Domestic", Common.Name)) %>% # removing hybrids and Domestic types
   filter(!grepl(" sp\\.", Scientific.Name)) # removing spuhs
