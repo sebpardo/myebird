@@ -1,44 +1,37 @@
-The `myebird` package provides functions that enable to quickly tally your own eBird dataset. You can slice it multiple ways to obtain total or cumulative species counts across countries, years, and even months. This is still a work in progress, so if you find any bugs or problems, please submit an [issue]().
+myebird 
 
-### Downloading your personal eBird data
+=======
+
+The `myebird` package provides functions that enable to quickly tally your own eBird dataset. You can slice it multiple ways to obtain total or cumulative species counts across countries, years, and even months. This is still a work in progress, so if you find any bugs or problems, please submit an [issue](https://github.com/sebpardo/myebird/issues).
+
+## Downloading your personal eBird data
 
 The first step is to submit a request to download your eBird data [here](http://ebird.org/ebird/downloadMyData) (make sure you are logged into eBird!). After a few minutes a you'll receive an email with a download link to a .zip file, which contains a csv file called "MyEBirdData.csv". Make sure to extract this file to your working directory in R.
 
-### Installation
+## Installation
 
 You can install this package from Github using devtools:
 
 
 ```r
 #install.packages("devtools")
-devtools::load_all()
+devtools::install_github("sebpardo/myebird")
 ```
 
-```
-## Loading myebird
-```
 
-```r
-#devtools::install_local("~/Projects/myebird/")
-#devtools::install_github("sebpardo/myebird")
-```
 
-### Usage
+## Usage
 
-We first load the required packages.
+We first load myebird and other required packages used in this example.
 
 
 ```r
-#library(myebird)
+library(myebird)
 library(dplyr)
-library(countrycode)
-library(lazyeval)
-library(tidyr)
-library(stringr)
 library(ggplot2)
 ```
 
-#### Loading data to R
+### Loading data to R
 
 The file provided by eBird can be easily read into R using `read.csv`, however there are a few fields that need to be slightly moved around in order to be able to group the data as needed. For example, the country information is not separate from the Location field, dates are stored as character, and common and scientific names include subspecies. We therefore provide the function `ebirdclean` which reads and then "cleans" this data frame for easier analysis:
 
@@ -82,7 +75,7 @@ glimpse(mylist)
 
 This function adds six new columns: Year, Month, Country.code, sciName, comName, and Country, which help . The year and month fields are extracted from the date, 
 
-#### Calculating cumulative and total species counts 
+### Calculating cumulative and total species counts 
 
 The two functions that do the tallying of total and cumulative counts are `myebirds` and `myebirdscumul`, respectively. They both work similarly: they have the argument "grouping", which specifies how to tally species counts.
 
@@ -118,7 +111,7 @@ To see these values graphically:
 ggplot(totyear, aes(Year, n)) + geom_bar(stat = "identity")
 ```
 
-![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png)
+![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png)
 
 If we wanted to see our **cumulative** yearly counts, we use `ebirdscumul`. In this case, we use the argument "cum.across" to specify we want to calculate cumulative across "Year", we use `NULL` as our "grouping" since we are not grouping by anything:
 
@@ -145,7 +138,7 @@ cumyear
 ggplot(cumyear, aes(Year, cumul)) + geom_bar(stat = "identity")
 ```
 
-![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png)
+![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7-1.png)
 
 What I really wanted these function to do is to slice the data in more complex ways. For example, how many birds have I seen each month in each country? 
 
@@ -157,7 +150,7 @@ myebirds(mylist, grouping = c("Country", "Month")) %>%
   facet_wrap(~Country)
 ```
 
-![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7-1.png)
+![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png)
 
 Or even cooler, how many species have I seen in each country and year, cumulative per month, between 2010 and 2016?
 
@@ -171,7 +164,7 @@ myebirdscumul(mylist, grouping = c("Country", "Year"), year = 2010:2016,
   facet_wrap(~Country)
 ```
 
-![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png)
+![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png)
 
 Or how many species have I recorded in every country, cumulative across years?
 
@@ -183,6 +176,8 @@ myebirdscumul(mylist, grouping = "Country", cum.across = "Year") %>%
   facet_wrap(~Country)
 ```
 
-![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png)
+![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10-1.png)
 
+## Bugs/Problems?
 
+This package is still a work in progress, so if you find any issues/bugs/problems or feel like adding any features please [let me know](https://github.com/sebpardo/myebird/issues)!
