@@ -105,4 +105,4 @@ myebirdscumul(mylist, grouping = "Country", cum.across = "Year") %>%
 
 ## Bugs/Problems?
 
-This package is still a work in progress, so if you find any issues/bugs/problems or feel like adding any features please [let me know](https://github.com/sebpardo/myebird/issues)!
+This package is still a work in progress, so if you find any issues/bugs/problems please [let me know](https://github.com/sebpardo/myebird/issues). There are a few more features I'd like to add (e.g., functions that make the graphs, grouping by county, grouping by taxa, to name a few); ideas are welcome!
