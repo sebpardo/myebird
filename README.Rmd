@@ -1,0 +1,98 @@
+The `myebird` package provides functions that enable to quickly tally your own eBird dataset. You can slice it multiple ways to obtain total or cumulative species counts across countries, years, and even months. This is still a work in progress, so if you find any bugs or problems, please submit an [issue]().
+
+### Downloading your personal eBird data
+
+The first step is to submit a request to download your eBird data [here](http://ebird.org/ebird/downloadMyData) (make sure you are logged into eBird!). After a few minutes a you'll receive an email with a download link to a .zip file, which contains a csv file called "MyEBirdData.csv". Make sure to extract this file to your working directory in R.
+
+### Installation
+
+You can install this package from Github using devtools:
+
+```{r}
+#install.packages("devtools")
+devtools::load_all()
+#devtools::install_local("~/Projects/myebird/")
+#devtools::install_github("sebpardo/myebird")
+```
+
+### Usage
+
+We first load the required packages.
+
+```{r, message=FALSE}
+#library(myebird)
+library(dplyr)
+library(countrycode)
+library(lazyeval)
+library(tidyr)
+library(stringr)
+library(ggplot2)
+```
+
+#### Loading data to R
+
+The file provided by eBird can be easily read into R using `read.csv`, however there are a few fields that need to be slightly moved around in order to be able to group the data as needed. For example, the country information is not separate from the Location field, dates are stored as character, and common and scientific names include subspecies. We therefore provide the function `ebirdclean` which reads and then "cleans" this data frame for easier analysis:
+
+```{r}
+mylist <- ebirdclean("MyEBirdData.csv") 
+glimpse(mylist)
+```
+
+This function adds six new columns: Year, Month, Country.code, sciName, comName, and Country, which help . The year and month fields are extracted from the date, 
+
+#### Calculating cumulative and total species counts 
+
+The two functions that do the tallying of total and cumulative counts are `myebirds` and `myebirdscumul`, respectively. They both work similarly: they have the argument "grouping", which specifies how to tally species counts.
+
+Let's start with `myebirds`. If we want to see the **total** number of species seen each year, we specify this in the "grouping" argument:
+
+
+```{r}
+totyear  <- myebirds(mylist, grouping = "Year")
+totyear
+```
+
+To see these values graphically:
+
+```{r, fig.width=5, fig.height=4}
+ggplot(totyear, aes(Year, n)) + geom_bar(stat = "identity")
+```
+
+If we wanted to see our **cumulative** yearly counts, we use `ebirdscumul`. In this case, we use the argument "cum.across" to specify we want to calculate cumulative across "Year", we use `NULL` as our "grouping" since we are not grouping by anything:
+
+```{r, fig.width=5, fig.height=4}
+cumyear <- myebirdscumul(mylist, grouping = NULL, cum.across = "Year")
+cumyear
+ggplot(cumyear, aes(Year, cumul)) + geom_bar(stat = "identity")
+```
+
+What I really wanted these function to do is to slice the data in more complex ways. For example, how many birds have I seen each month in each country? 
+
+```{r}
+myebirds(mylist, grouping = c("Country", "Month")) %>%
+  ggplot(aes(ordered(Month, month.name), n)) + geom_bar(stat = "identity") +
+  scale_x_discrete(name = "Month", labels = substring(month.abb, 1, 1)) +
+  facet_wrap(~Country)
+```
+
+Or even cooler, how many species have I seen in each country and year, cumulative per month, between 2010 and 2016?
+
+```{r}
+myebirdscumul(mylist, grouping = c("Country", "Year"), year = 2010:2016,
+                        cum.across = c("Month")) %>%
+  ggplot(aes(ordered(Month, month.name), cumul, color = Year, group = Year)) +
+  geom_point() + geom_line() +
+  scale_x_discrete(name = "Month", labels = substring(month.abb, 1, 1)) +
+  facet_wrap(~Country)
+```
+
+Or how many species have I recorded in every country, cumulative across years?
+
+```{r}
+myebirdscumul(mylist, grouping = "Country", cum.across = "Year") %>%
+  ggplot(aes(Year, cumul, group = 1)) + geom_point() + geom_line() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  facet_wrap(~Country)
+```
+
+
