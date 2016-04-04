@@ -1,5 +1,4 @@
 myebird 
-
 =======
 
 The `myebird` package provides functions that enable to quickly tally your own eBird dataset. You can slice it multiple ways to obtain total or cumulative species counts across countries, years, and even months. This is still a work in progress, so if you find any bugs or problems, please submit an [issue](https://github.com/sebpardo/myebird/issues).
