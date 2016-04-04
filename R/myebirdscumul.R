@@ -100,7 +100,11 @@ myebirdscumul <- function (mydata, years = 1900:format(Sys.Date(), "%Y"),
     md3
   } else
 
-    if (setequal(grouping, c("Year","Country"))) {
+    if (setequal(grouping, "Country") && setequal(cum.across, "Year")) {
+      lcum <- gather(md3, Year, cumul, -Country)
+      lcum
+    } else
+      if (setequal(grouping, c("Year","Country"))) {
       lcum <- gather(md3, Month, cumul, -Year, -Country)
       lcum
     } else
@@ -108,7 +112,7 @@ myebirdscumul <- function (mydata, years = 1900:format(Sys.Date(), "%Y"),
         lcum <- gather(md3, Month, cumul, -Year)
         lcum
       } else
-        if (setequal(grouping, c("Country"))) {
+        if (setequal(grouping, c("Country")) & !setequal(cum.across, c("Country"))) {
           lcum <- gather(md3, Month, cumul, -Country)
           if (setequal(cum.across, c("Year","Month"))) {
             lcum <- rename(lcum, Year.Month = Month)
@@ -124,7 +128,6 @@ myebirdscumul <- function (mydata, years = 1900:format(Sys.Date(), "%Y"),
             lcum
         } else
           if (is.null(grouping) && length(cum.across) == 1 && cum.across == "Year") {
-            browser()
             lcum <- gather(md3, Year, cumul, -location)
             lcum
           } else
