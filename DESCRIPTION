@@ -1,6 +1,6 @@
 Package: myebird
 Title: Analyse Your Personal eBird Data
-Version: 0.0.0.9000
+Version: 0.0.1
 Authors@R: person("Sebastian", "Pardo", email = "sebpardo@gmail.com", role = c("aut", "cre"))
 Description: Calculate cumulative and total species counts across countries, years, and months, using your own eBird data.
 Depends:
