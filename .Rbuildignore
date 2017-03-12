@@ -3,3 +3,4 @@
 MyEBirdData.csv
 figure/
 README.html
+^data-raw$

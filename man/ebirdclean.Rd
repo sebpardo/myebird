@@ -14,7 +14,7 @@ An updated data frame, with the following changes:
   - Separates the Date column into two new columns, Year and Month.
   - Extracts country information from State.Province and converts into full name (using the countrycode package)
   - Removes text in parentheses in Common.name, which is used to denote subspecies or groups.
-  - Removes all rows of species labelled as hybrids, domestic types, or spuhs (Genus sp.).
+  - Removes all rows of species labelled as hybrids, domestic types, slashes (uncertain records between two species), or spuhs (Genus sp.).
 }
 \description{
 Clean data frame provided by eBird
@@ -25,8 +25,7 @@ Uses \code{read.csv} to read the .csv file, with its only argument being \code{s
 \examples{
 \dontrun{
 mylist <- ebirdclean("MyEBirdData.csv")
-mylist <- ebirdclean()
-}
+mylist <- ebirdclean()}
 }
 \author{
 Sebastian Pardo \email{sebpardo@gmail.com}
