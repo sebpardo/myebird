@@ -1,10 +1,19 @@
 Package: myebird
 Title: Analyse Your Personal eBird Data
-Version: 0.0.1
+Version: 0.0.2
 Authors@R: person("Sebastian", "Pardo", email = "sebpardo@gmail.com", role = c("aut", "cre"))
 Description: Calculate cumulative and total species counts across countries, years, and months, using your own eBird data.
 Depends:
     R (>= 3.2.4)
 License: MIT + file LICENSE
 LazyData: true
+URL: http://github.com/sebpardo/myebird
+BugReports: http://github.com/sebpardo/myebird/issues
 RoxygenNote: 5.0.1
+Imports: 
+    dplyr,
+    tidyr,
+    lazyeval,
+    stringr,
+    countrycode
+    
