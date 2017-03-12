@@ -19,7 +19,7 @@
 #' @return If in wide format, then the first column(s) consist of the values in grouping that
 #' are not equal to wide, while the remaining columns are unique values of the argument specified in wide.
 #'
-#' @import dplyr tidyr lazyeval
+#' @import dplyr
 #' @export
 #'
 #' @examples \dontrun{
@@ -45,11 +45,11 @@ myebirds <- function (mydata, years = 1900:format(Sys.Date(), "%Y"),
     if (wide != FALSE && wide %in% grouping != TRUE) stop("wide not in grouping")
   else
 
-    mydata <- group_by_(mydata, .dots = all_dots(grouping)) %>%  # Groupings, can be Year, Month, and/or country
+    mydata <- group_by_(mydata, .dots = lazyeval::all_dots(grouping)) %>%  # Groupings, can be Year, Month, and/or country
       filter(Year %in% years) %>% # Select year range
       summarise(n = n_distinct(comName)) # Select distinct species after removing types
   if (wide != FALSE && wide %in% grouping) {
-    spread_(mydata, wide, "n", fill = "0")
+    tidyr::spread_(mydata, wide, "n", fill = "0")
   } else
     mydata
 }

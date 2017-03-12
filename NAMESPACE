@@ -3,7 +3,5 @@
 export(ebirdclean)
 export(myebirds)
 export(myebirdscumul)
-import(countrycode)
+export(myedge)
 import(dplyr)
-import(lazyeval)
-import(tidyr)

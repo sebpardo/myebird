@@ -21,7 +21,7 @@
 #' @return If in wide format, then the first column(s) consist of the values in grouping that
 #' are not equal to wide, while the remaining columns are unique values of the argument specified in wide.
 #'
-#' @import dplyr tidyr lazyeval
+#' @import dplyr
 #' @export
 #'
 #' @examples \dontrun{
@@ -42,14 +42,14 @@ myebirdscumul <- function (mydata, years = 1900:format(Sys.Date(), "%Y"),
   else
 
     # Groupings, can be Year, Month, and/or country
-    mydata2 <- group_by_(mydata, .dots = all_dots(grouping)) %>%
+    mydata2 <- group_by_(mydata, .dots = lazyeval::all_dots(grouping)) %>%
       filter(Year %in% years)
 
   if (is.null(grouping)) {
     md3 <- data.frame(location = "World")
   } else {
     md3 <- summarise(mydata2, n = n_distinct(comName)) %>%
-      select_(.dots = all_dots(grouping))
+      select_(.dots = lazyeval::all_dots(grouping))
   }
 
   if (length(cum.across) == 1 && cum.across == "Month") {
@@ -101,19 +101,19 @@ myebirdscumul <- function (mydata, years = 1900:format(Sys.Date(), "%Y"),
   } else
 
     if (setequal(grouping, "Country") && setequal(cum.across, "Year")) {
-      lcum <- gather(md3, Year, cumul, -Country)
+      lcum <- tidyr::gather(md3, Year, cumul, -Country)
       lcum
     } else
       if (setequal(grouping, c("Year","Country"))) {
-      lcum <- gather(md3, Month, cumul, -Year, -Country)
+      lcum <- tidyr::gather(md3, Month, cumul, -Year, -Country)
       lcum
     } else
       if (setequal(grouping, c("Year"))) {
-        lcum <- gather(md3, Month, cumul, -Year)
+        lcum <- tidyr::gather(md3, Month, cumul, -Year)
         lcum
       } else
         if (setequal(grouping, c("Country")) & !setequal(cum.across, c("Country"))) {
-          lcum <- gather(md3, Month, cumul, -Country)
+          lcum <- tidyr::gather(md3, Month, cumul, -Country)
           if (setequal(cum.across, c("Year","Month"))) {
             lcum <- rename(lcum, Year.Month = Month)
             yml <- as.data.frame(do.call(rbind, strsplit(as.vector(lcum$Year.Month), "[.]")),
@@ -128,11 +128,11 @@ myebirdscumul <- function (mydata, years = 1900:format(Sys.Date(), "%Y"),
             lcum
         } else
           if (is.null(grouping) && length(cum.across) == 1 && cum.across == "Year") {
-            lcum <- gather(md3, Year, cumul, -location)
+            lcum <- tidyr::gather(md3, Year, cumul, -location)
             lcum
           } else
             if (setequal(cum.across, c("Year","Month")) && is.null(grouping)) {
-              lcum <- gather(md3, Year.Month, cumul, -location)
+              lcum <- tidyr::gather(md3, Year.Month, cumul, -location)
               yml <- as.data.frame(do.call(rbind, strsplit(as.vector(lcum$Year.Month), "[.]")),
                                    stringsAsFactors = FALSE)
               colnames(yml) <- cum.across
