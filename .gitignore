@@ -5,3 +5,6 @@ MyEBirdData.csv
 README.html
 *.csv
 myebirdedge.R
+data-raw/*.tre
+*.html
+myedge*.Rmd
