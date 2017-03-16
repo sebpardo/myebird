@@ -28,7 +28,7 @@
 #' @param edge.cutoff Cutoff for EDGE rankings to be returned. Defaults to
 #'   \code{9999}, which returns all species in the EDGE list.
 
-#' @return A data frame containing the following four columns:
+#' @return A data frame containing the following five columns:
 #' @return "sciName": Scientific name. Most of these have been updated using
 #'   eBird's taxonomy (see \code{raw-data/edge-data-clean.R} for more info).
 #' @return "comName": Common name.
@@ -36,6 +36,8 @@
 #'   \url{http://www.edgeofexistence.org/birds/default.php}.
 #' @return "EDGE.Rank": Ranking based on EDGE score, as it appears in
 #'   \url{http://www.edgeofexistence.org/birds/default.php}.
+#'@return "sciName.edge": Scientific name as they appear in the Jetz et al. (2014)
+#'   phylogeny.
 #'
 #' @references
 #' Jetz, W., Thomas, G. H., Joy, J. B., Redding, D. W.,

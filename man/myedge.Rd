@@ -16,7 +16,7 @@ myedge(mydata, edge.cutoff = 9999)
 \code{9999}, which returns all species in the EDGE list.}
 }
 \value{
-A data frame containing the following four columns:
+A data frame containing the following five columns:
 
 "sciName": Scientific name. Most of these have been updated using
   eBird's taxonomy (see \code{raw-data/edge-data-clean.R} for more info).
@@ -28,6 +28,9 @@ A data frame containing the following four columns:
 
 "EDGE.Rank": Ranking based on EDGE score, as it appears in
   \url{http://www.edgeofexistence.org/birds/default.php}.
+
+"sciName.edge": Scientific name as they appear in the Jetz et al. (2014)
+  phylogeny.
 }
 \description{
 \code{myedge} provides Evolutionarily Distinct and Globally Endangered (EDGE)
