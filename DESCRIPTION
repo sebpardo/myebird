@@ -15,5 +15,6 @@ Imports:
     tidyr,
     lazyeval,
     stringr,
-    countrycode
-    
+    countrycode,
+    ape,
+    tibble
