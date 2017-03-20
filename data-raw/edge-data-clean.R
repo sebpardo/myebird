@@ -11,7 +11,7 @@ edgeraw <- read.csv("data-raw/EDGE_birds_2014.csv", stringsAsFactors = FALSE,
 #str(edge)
 
 ed <- edgeraw %>% tbl_df %>%
-  dplyr::select(Species, EDGE.Score, EDGE.Rank, Common.Name) %>%
+  dplyr::select(Species, ED.Score, EDGE.Score, EDGE.Rank, Common.Name) %>%
   rename(sciName = Species, comName = Common.Name) %>%
   mutate(sciName.edge = sub(" ", "_", sciName)) # keeping old names too for matching tree
 
@@ -68,7 +68,7 @@ ed$sciName <- sub("Larus (cirrocephalus|maculipennis|novaehollandiae|philadelphi
 edge <- left_join(ed, espp, by = "comName") %>%
   mutate(sciName = ifelse(is.na(sciName.y) & .$sciName.x != "Pica pica",
                           sciName.x, sciName.y)) %>%
-  select(sciName, comName, EDGE.Score, EDGE.Rank, sciName.edge) %>%
+  select(sciName, comName, ED.Score, EDGE.Score, EDGE.Rank, sciName.edge) %>%
   arrange(EDGE.Rank)
 
 devtools::use_data(edge, overwrite = TRUE)

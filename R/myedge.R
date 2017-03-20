@@ -1,6 +1,6 @@
 #' EDGE scores of species in your eBird lists.
 #'
-#' \code{myedge} provides Evolutionarily Distinct and Globally Endangered (EDGE)
+#' \code{myedge} provides Evolutionarily Distinct (ED) and Globally Endangered (EDGE)
 #' species scores and rankings based on Jetz et al. (2014).
 #'
 #' EDGE scores are calculated from a species evolutionary distinctiveness (ED)
@@ -28,10 +28,12 @@
 #' @param edge.cutoff Cutoff for EDGE rankings to be returned. Defaults to
 #'   \code{9999}, which returns all species in the EDGE list.
 
-#' @return A data frame containing the following five columns:
+#' @return A data frame containing the following six columns:
 #' @return "sciName": Scientific name. Most of these have been updated using
 #'   eBird's taxonomy (see \code{raw-data/edge-data-clean.R} for more info).
 #' @return "comName": Common name.
+#' @return "ED.Score": Evolutionary distinctiveness as it appears in
+#'   \url{http://www.edgeofexistence.org/birds/default.php}.
 #' @return "EDGE.Score": EDGE score calculated using the equation above, as it appears in
 #'   \url{http://www.edgeofexistence.org/birds/default.php}.
 #' @return "EDGE.Rank": Ranking based on EDGE score, as it appears in
