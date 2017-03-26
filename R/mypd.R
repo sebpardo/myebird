@@ -11,6 +11,9 @@
 #' how the trees were extracted from the original source.#'
 #'
 #' @param mydata Data frame created with \code{\link{ebirdclean}}.
+#' @param ntrees Integer indicating the number of phylogenetic trees to use for
+#'  calculating PD. Value must be between 1 and 20. Defaults to 20. Lower this
+#'  number if computation of PD is taking too long.
 #'
 #' @return A tibble containing the mean ("mean_pd"), median ("median_pd"), and standard
 #'  deviation ("sd_pd") vaules; units are in million years.
@@ -37,7 +40,7 @@
 #'
 #' @author Sebastian Pardo \email{sebpardo@gmail.com}
 
-mypd <- function(mydata) {
+mypd <- function(mydata, ntrees = 20) {
   # need to figure out how to load trees properly
   #load("trees.rdata")
   myedgebirds <- myedge(mydata)
@@ -47,7 +50,7 @@ mypd <- function(mydata) {
   #pds <- lapply(jetz20trees, keep.tip, tip = myedgebirds$sciName.edge) %>%
 
   # object jetz20trees is loaded internally from R/sysdata.rda
-  pds <- lapply(jetz20trees, function (x) {
+  pds <- lapply(jetz20trees[1:ntrees], function (x) {
     ape::drop.tip(x, setdiff(x$tip.label, myedgebirds$sciName.edge))
     }) %>%
     lapply(function (x) sum(x$edge.length)) %>%

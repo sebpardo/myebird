@@ -4,10 +4,14 @@
 \alias{mypd}
 \title{Total phylogenetic distance of species in your eBird lists.}
 \usage{
-mypd(mydata)
+mypd(mydata, ntrees = 20)
 }
 \arguments{
 \item{mydata}{Data frame created with \code{\link{ebirdclean}}.}
+
+\item{ntrees}{Integer indicating the number of phylogenetic trees to use for
+calculating PD. Value must be between 1 and 20. Defaults to 20. Lower this
+number if computation of PD is taking too long.}
 }
 \value{
 A tibble containing the mean ("mean_pd"), median ("median_pd"), and standard
@@ -28,10 +32,11 @@ how the trees were extracted from the original source.#'
 \examples{
 \dontrun{
 mylist <- ebirdclean("MyEBirdData.csv")
+# Estimate PD for your whole eBird checklist:
 mypd(mylist)
 
-# To look at PD values by country (using dplyr):
-mybirds \%>\%
+# Estimate PD by country (using dplyr):
+mylist \%>\%
   group_by(Country) \%>\%
   do(mypd(.))}
 
