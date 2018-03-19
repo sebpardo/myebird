@@ -5,14 +5,30 @@ library(dplyr)
 library(rebird)
 
 espp <- ebirdtaxonomy(cat = "species")
-edgeraw <- read.csv("data-raw/EDGE_birds_2014.csv", stringsAsFactors = FALSE,
-                 strip.white = TRUE)
+
+# # Old EDGE dataset
+# edgeraw <- read.csv("data-raw/EDGE_birds_2014.csv", stringsAsFactors = FALSE,
+#                  strip.white = TRUE)
+
+# New EDGE dataset
+edgerawnew <- read.csv("data-raw/EDGE_birds_2017.csv", stringsAsFactors = FALSE,
+                    strip.white = TRUE)
 
 #str(edge)
 
-ed <- edgeraw %>% tbl_df %>%
-  dplyr::select(Species, ED.Score, EDGE.Score, EDGE.Rank, Common.Name) %>%
-  rename(sciName = Species, comName = Common.Name) %>%
+# # Old EDGE dataset
+# ed <- edgeraw %>% tbl_df %>%
+#   dplyr::select(Species, ED.Score, EDGE.Score, EDGE.Rank, Common.Name) %>%
+#   rename(sciName = Species, comName = Common.Name) %>%
+#   mutate(sciName.edge = sub(" ", "_", sciName)) # keeping old names too for matching tree
+
+# New EDGE dataset
+ed <- edgerawnew %>% tbl_df %>%
+  dplyr::select(Species, ED, GE, EDGE, Common.name) %>%
+  mutate(EDGE.Rank = row_number(-EDGE)) %>%
+  rename(sciName = Species, comName = Common.name, ED.Score = ED, EDGE.Score = EDGE) %>%
+  select(sciName, ED.Score, GE, EDGE.Score, EDGE.Rank, comName) %>%
+  arrange(EDGE.Rank) %>%
   mutate(sciName.edge = sub(" ", "_", sciName)) # keeping old names too for matching tree
 
 # capitalizing after hyphen if word is a bird name
@@ -72,3 +88,9 @@ edge <- left_join(ed, espp, by = "comName") %>%
   arrange(EDGE.Rank)
 
 devtools::use_data(edge, overwrite = TRUE)
+
+# Looking at Shrike-tits, which are a species group split on EDGE but not on eBird
+# ed[grep("Shrike-tit", ed$comName) , ]
+# edge[grep("Shrike-tit", edge$comName) , ]
+# espp[grep("Shrike-Tit", espp$comName) , ]
+
