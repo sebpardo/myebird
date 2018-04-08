@@ -84,7 +84,7 @@ ed$sciName <- sub("Larus (cirrocephalus|maculipennis|novaehollandiae|philadelphi
 edge <- left_join(ed, espp, by = "comName") %>%
   mutate(sciName = ifelse(is.na(sciName.y) & .$sciName.x != "Pica pica",
                           sciName.x, sciName.y)) %>%
-  select(sciName, comName, ED.Score, EDGE.Score, EDGE.Rank, sciName.edge) %>%
+  select(sciName, comName, ED.Score, GE, EDGE.Score, EDGE.Rank, sciName.edge) %>%
   arrange(EDGE.Rank)
 
 devtools::use_data(edge, overwrite = TRUE)
