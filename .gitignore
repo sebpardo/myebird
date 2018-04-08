@@ -3,7 +3,7 @@
 .RData
 MyEBirdData.csv
 README.html
-*.csv
+*.xslx
 myebirdedge.R
 data-raw/*.tre
 *.html
