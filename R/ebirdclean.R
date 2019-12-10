@@ -29,7 +29,11 @@ ebirdclean <- function(x = "MyEBirdData.csv") {
                                                       "iso2c", "country.name")) %>%
                   # Adding full country names
   filter(!grepl("hybrid|Domestic", Common.Name)) %>% # removing hybrids and Domestic types
-  filter(!grepl(" sp\\.", Scientific.Name)) %>% # removing spuhs
-  filter(!grepl("\\/", Scientific.Name)) # removing "slashes" (records that could be one of two species)
+    # These two filters are now on sciName rather than Scientific.Name as the former
+    # exludes subspecies and when using the latter slashes in ssp should were being excluded
+  filter(!grepl(" sp\\.", sciName)) %>% # removing spuhs
+  filter(!grepl("\\/", sciName)) # removing "slashes" (records that could be one of two species)
+
   mydata
 }
+
