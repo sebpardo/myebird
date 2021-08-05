@@ -17,7 +17,7 @@
 #' @author Sebastian Pardo \email{sebpardo@gmail.com}
 
 ebirdclean <- function(x = "MyEBirdData.csv") {
-  mydata <- tbl_df(read.csv(x, stringsAsFactors = FALSE))
+  mydata <- as_tibble(read.csv(x, stringsAsFactors = FALSE))
   mydata <- mydata %>%  mutate(Year = format(strptime(Date, "%m-%d-%Y"), "%Y"),
                                Month = factor(format(strptime(Date, "%m-%d-%Y"), "%B"),
                                               levels = month.name),
